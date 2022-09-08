@@ -52,6 +52,8 @@ $darkcolor: rgb(53, 7, 7);
     grid-column: 1 / 2;
     display: grid;
     grid-template-rows: 1fr 1fr 1fr 4fr 1fr;
+    border: 2px solid ivory;
+    border-left: none;
     text-align: center;
 
     button {
