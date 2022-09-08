@@ -38,7 +38,9 @@ function createSection (section) {
 
 // populate Header
 function populateHead() {
-
+    const head = document.querySelector('.header');
+    head.innerHTML = "To Do"
+    return;
 }
 
 // populate NavBar
