@@ -20,15 +20,8 @@ addtask.addEventListener('click', ()=>{
         formoverlay.remove();
         todoArr.push(tile);
         // Finish Task Event Listeners
-        render(todoArr);
-        const task = document.querySelector('.finish');
-        task.addEventListener('click', (e)=>{
-            console.log(e.target.dataset.index);
-            todoArr.splice(e.target.dataset.index, 1);
-            render(todoArr);
-        });
+        resRender(todoArr);
     });
-
     // Close Form Event Listener
 });
 
@@ -55,4 +48,16 @@ function getInputs() {
     }
 
     return [t, d, dd, p];
+}
+
+// makes a responsive render
+function resRender(objArr) {
+    render(objArr);
+    const tasks = document.querySelectorAll('.finish');
+    tasks.forEach((box) => {
+        box.addEventListener('click', (e)=>{
+            todoArr.splice(e.target.dataset.index, 1);
+            resRender(todoArr);
+        });
+    });
 }
