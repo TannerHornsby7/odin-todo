@@ -7,6 +7,7 @@ const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   entry: {
+    holder: "./src/holder.js",
     index: "./src/index.js",
     layout: "./src/layout.js"
   },

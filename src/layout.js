@@ -1,7 +1,8 @@
+import { doc } from 'prettier';
 import './style.scss';
 
 // layout factory function
-let layout = (c, h, n, m, f) => {
+const layout = (c, h, n, m, f) => {
     const proto = {
         type: 'layout',
         c, //container
@@ -18,6 +19,48 @@ let layout = (c, h, n, m, f) => {
     }
     return Object.assign(Object.create(proto), { c, h, n, m } );
 };
+
+// Form factory function
+const popform = () => {
+    const formbody = document.createElement('div');
+    const form = document.createElement('form');
+    const submit = createButton('submit');
+    const priorities = document.createElement('div');
+    priorities.classList.add('priorities');
+
+    submit.type = 'button';
+    formbody.classList.add('formoverlay');
+    form.id = 'popform';
+    form.method = "post";
+    form.appendChild(createInput('title', 'text'));
+    form.appendChild(createInput('description', 'text'));
+    form.appendChild(createInput('duedate', 'date'));
+    priorities.appendChild(createInput('hpriority', 'radio'));
+    priorities.appendChild(createInput('mpriority', 'radio'));
+    priorities.appendChild(createInput('lpriority', 'radio'));
+    form.appendChild(priorities);
+    form.appendChild(submit);
+
+    formbody.appendChild(form);
+
+    document.body.appendChild(formbody);
+}
+
+// Create form input
+function createInput (name, type) {
+    const div = document.createElement('div');
+    const element = document.createElement('input');
+    const label = document.createElement('label');
+    label.for = name;
+    label.textContent = name.toUpperCase();
+    element.type = type;
+    element.name = name;
+    element.classList.add(name);
+    div.appendChild(label);
+    div.appendChild(element);
+
+    return div;
+}
 
 // Append list of sections to container
 function appendSections(c) {
@@ -84,4 +127,4 @@ function createButton(name) {
 }
 
 
-export default layout;
+export { layout, popform };
