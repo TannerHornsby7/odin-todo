@@ -8,30 +8,35 @@ let layout = (c, h, n, m, f) => {
         h, //header
         n, //navbar
         m, //main
-        f, //footer
         compose () {
-            return appendElements(c, h, n, m, f)
+            return appendSections(c, h, n, m)
         }
     }
 
-    return Object.assign(Object.create(proto), { c, h, n, m, f } );
+    return Object.assign(Object.create(proto), { c, h, n, m } );
 };
 
-// Create DOM element and add it's class
-function createElement (element) {
+// Create Header
+
+
+
+// Create Navbar
+
+// Create DOM section and add it's class
+function createSection (section) {
     let dome = document.createElement('div');
-    if(element != "container") {
-        dome.textContent = element;
+    if(section != "container") {
+        dome.textContent = section;
     }
-    dome.classList.add(element);
+    dome.classList.add(section);
     return dome;
 }
 
-// Append list of elements to container
-function appendElements(c) {
-    const container = createElement(c);
+// Append list of sections to container
+function appendSections(c) {
+    const container = createSection(c);
     for(let i = 1; i<arguments.length; i++) {
-        container.appendChild(createElement(arguments[i]));
+        container.appendChild(createSection(arguments[i]));
     }
     return document.body.appendChild(container);
 }
