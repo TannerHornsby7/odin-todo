@@ -48,17 +48,25 @@ function populateNav() {
     const nav = document.querySelector('.navbar');
     const projects = document.createElement('h2');
     projects.innerHTML = 'PROJECTS';
+    const addtask = createButton("addtask");
+    addtask.textContent = "ADD TASK";
 
     //appending children to nav
     nav.appendChild(createButton("inbox"));
     nav.appendChild(createButton("day"));
     nav.appendChild(createButton("week"));
     nav.appendChild(projects);
+    nav.appendChild(addtask)
     return;
 }
 
 // populate Main
 function populateMain() {
+    const main = document.querySelector('.main');
+    const inbox = document.createElement('h2');
+    inbox.innerHTML = 'INBOX';
+
+    main.appendChild(inbox);
     return;
 }
 
