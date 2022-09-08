@@ -15,9 +15,10 @@ addtask.addEventListener('click', ()=>{
     submitbtn.addEventListener('click', ()=> {
         const formoverlay = document.querySelector('.formoverlay')
         const inputs = getInputs();
-        todoArr.push(todo(inputs));
+        const tile = todo(inputs);
+        console.log(tile);
+        todoArr.push(tile);
         formoverlay.style.display = 'none';
-        console.log(todoArr);
     });
     //update ui
 });
@@ -28,19 +29,21 @@ function getInputs() {
     const formData = new FormData(formEl);
     let t = formData.get('title');
     let d = formData.get('description')
-    let dd = formData.get('date');
-    let p = formData.get('radio');
-    let n = formData.get('note');
+    let dd = formData.get('duedate');
+    let hp = formData.get('hpriority');
+    let mp = formData.get('mpriority');
+    let lp = formData.get('mpriority');
+    let p;
 
-    return {n, d, dd, p}
+    if(hp) {
+        p = "hpriority";
+    }
+    else if (mp) {
+        p = "mpriority";
+    }
+    else {
+        p = "lpriority";
+    }
+
+    return [t, d, dd, p];
 }
-
-
-
-
-console.log("Hello World!");
-console.log(l);
-
-const john = todo("John", "john is a smelly boy", "1/22/2022", "HIGH", "he really stinks");
-john.setVal("t", "David");
-console.log(john);

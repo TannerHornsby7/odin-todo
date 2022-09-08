@@ -1,11 +1,10 @@
-const todo = (t, d, dd, p, n)=>{
+const todo = (arg)=>{
     const proto = {
         type: 'Todo',
-        t,
-        d,
-        dd,
-        p,
-        n,
+        t : arg[0],
+        d : arg[1],
+        dd : arg[2],
+        p : arg[3],
         getVal(key) {
             return this.key;
         },
@@ -14,7 +13,7 @@ const todo = (t, d, dd, p, n)=>{
         }
     }
 
-    return Object.assign(Object.create(proto), {t, d, dd, p, n})
+    return Object.assign(Object.create(proto), {arg})
 };
 
 export default todo
