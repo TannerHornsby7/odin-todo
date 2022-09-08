@@ -1,3 +1,6 @@
+import fin from './assets/logo.png';
+import fla from './assets/flag.png';
+
 // Render UI from object Array
 function render(objList) {
     const main = document.querySelector('.main');
@@ -21,30 +24,35 @@ function makeList(objList) {
 
 // Create DOM Element for Todo
 function makeTile(obj) {
-    const close = document.createElement('icon');
-    const flag = document.createElement('icon');
+    const finish = document.createElement('img');
+    const flag = document.createElement('img');
     const headdiv = document.createElement('div');
     const tile = document.createElement('div');
     const title = document.createElement('h3');
     const description = document.createElement('p');
     const duedate = document.createElement('p');
-    const flags = 1;
+    let flags = 0;
 
     tile.classList.add('tile');
     flag.classList.add('flag');
-    close.classList.add('close');
+    flag.src = fla;
+    flag.title = 'priority'
+    finish.classList.add('finish');
+    finish.src = fin;
+    finish.title = 'done?';
+
 
     // setting head div content
-    if(obj.p == 2) {
-        flags = 2;
+    headdiv.appendChild(finish);
+    if(obj.p == 'mpriority') {
+        flags = 1;
     }
-    else if(obj.p == 3) {
-        flags = 3
+    else if(obj.p == 'hpriority') {
+        flags = 2
     }
     for(let i = 0; i < flags; i++) {
-        headdiv.appendChild(flag);
+        headdiv.appendChild(flag.cloneNode());
     }
-    headdiv.appendChild(close);
     tile.appendChild(headdiv);
 
     // setting tile content
