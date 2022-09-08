@@ -1,16 +1,13 @@
-# Odin To-Do
+# Odin To Do App
 
 ![todo]()
 
 ## Description
-To Do list created for the odin project
 
-## Live Demo
-
-[here]()
+A todo app created using javascript
 
 ## Skills
-- JS (OOP & Webpack)
+- Javascript
+- Webpack
 - CSS
-- HTML
 - GIT
