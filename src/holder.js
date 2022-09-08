@@ -1,3 +1,5 @@
+// Information holding object
+
 const todo = (arg)=>{
     const proto = {
         type: 'Todo',

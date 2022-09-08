@@ -1,29 +1,31 @@
 import { popform, layout } from './layout';
-import todo from './holder'
+import todo from './holder';
+import render from './render.js';
 import './style.scss';
 
 let l = layout("container", "header", "navbar", "main").compose();
 let todoArr = [];
 
-// Add Event Listeners to Layout
+// Add Task Event Listener
 const addtask = document.getElementById('addtask');
-
 addtask.addEventListener('click', ()=>{
     popform();
     const submitbtn = document.getElementById('submit');
     
+    // Submit Form Event Listener
     submitbtn.addEventListener('click', ()=> {
         const formoverlay = document.querySelector('.formoverlay')
         const inputs = getInputs();
         const tile = todo(inputs);
-        console.log(tile);
+        formoverlay.remove();
         todoArr.push(tile);
-        formoverlay.style.display = 'none';
+        render(todoArr);
     });
-    //update ui
+    // Close Form Event Listener
 });
 
-//get all input values
+
+// Get all form input values
 function getInputs() {
     const formEl = document.forms.popform;
     const formData = new FormData(formEl);
