@@ -19,11 +19,18 @@ addtask.addEventListener('click', ()=>{
         const tile = todo(inputs);
         formoverlay.remove();
         todoArr.push(tile);
+        // Finish Task Event Listeners
         render(todoArr);
+        const task = document.querySelector('.finish');
+        task.addEventListener('click', (e)=>{
+            console.log(e.target.dataset.index);
+            todoArr.splice(e.target.dataset.index, 1);
+            render(todoArr);
+        });
     });
+
     // Close Form Event Listener
 });
-
 
 // Get all form input values
 function getInputs() {

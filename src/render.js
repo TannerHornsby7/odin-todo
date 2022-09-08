@@ -17,13 +17,15 @@ function makeList(objList) {
     const tiles = document.createElement('div');
     tiles.id = 'tiles';
     for (let i = 0; i < objList.length; i++) {
-        tiles.appendChild(makeTile(objList[i]));
+        const tile = makeTile(objList[i], i);
+        
+        tiles.appendChild(tile);
     }
     return tiles;
 }
 
 // Create DOM Element for Todo
-function makeTile(obj) {
+function makeTile(obj, index) {
     const finish = document.createElement('img');
     const flag = document.createElement('img');
     const headdiv = document.createElement('div');
@@ -40,6 +42,7 @@ function makeTile(obj) {
     finish.classList.add('finish');
     finish.src = fin;
     finish.title = 'done?';
+    finish.dataset.index = index;
 
 
     // setting head div content
