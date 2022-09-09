@@ -16,7 +16,7 @@ addtask.addEventListener('click', ()=>{
     // Submit Form Event Listener
     submitbtn.addEventListener('click', ()=> {
         const formoverlay = document.querySelector('.formoverlay')
-        const inputs = getInputs();
+        const inputs = getFormInputs();
         const tile = todo(inputs);
         formoverlay.remove();
         todoArr.push(tile);
@@ -52,8 +52,8 @@ week.addEventListener('click', ()=> {
     resRender(todoweek);
 });
 
-// Get all form input values
-function getInputs() {
+// Get all task form input values
+function getFormInputs() {
     const formEl = document.forms.popform;
     const formData = new FormData(formEl);
     let t = formData.get('title');
