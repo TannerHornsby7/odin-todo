@@ -26,16 +26,30 @@ addtask.addEventListener('click', ()=>{
     // Close Form Event Listener
 });
 
-// Today Filter
+// Inbox Button
+const inbox = document.getElementById('inbox');
+inbox.addEventListener('click', ()=> {
+    resRender(todoArr);
+});
+
+// Today Button
 const today = document.getElementById('day');
-console.log(today);
 today.addEventListener('click', ()=> {
     const todotoday = todoArr.filter((object)=>{
-        console.log(object.dd);
-        return moment(object.dd).diff(moment(), 'hours') < 25;
+        const diff = moment(object.dd, 'YYYY-MM-DD').diff(moment(), 'hours');
+        return diff <= 24 && diff > 0;
     });
-    console.log(todotoday);
     resRender(todotoday);
+});
+
+// Week Button
+const week = document.getElementById('week');
+week.addEventListener('click', ()=> {
+    const todoweek = todoArr.filter((object)=>{
+        const diff = moment(object.dd, 'YYYY-MM-DD').diff(moment(), 'days');
+        return  diff <= 7 && diff >= 0;
+    });
+    resRender(todoweek);
 });
 
 // Get all form input values
@@ -47,7 +61,6 @@ function getInputs() {
     let dd = formData.get('duedate');
     let hp = formData.get('hpriority');
     let mp = formData.get('mpriority');
-    let lp = formData.get('mpriority');
     let p;
 
     if(hp) {

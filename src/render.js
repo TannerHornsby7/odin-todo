@@ -1,5 +1,6 @@
 import fin from './assets/logo.png';
 import fla from './assets/flag.png';
+import { invalid } from 'moment';
 const moment = require('moment');
 
 
@@ -63,7 +64,10 @@ function makeTile(obj, index) {
     // setting tile content
     title.textContent = obj.t;
     description.textContent = obj.d;
-    duedate.textContent = moment(obj.dd).format('MMMM d, YYYY');
+    duedate.textContent = moment(obj.dd, 'YYYY-MM-DD').format('MMMM D, YYYY');
+    if(duedate.textContent == "Invalid date") {
+        duedate.textContent = '';
+    }
     tile.appendChild(title);
     tile.appendChild(description);
     tile.appendChild(duedate);
