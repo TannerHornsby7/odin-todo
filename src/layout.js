@@ -1,4 +1,5 @@
 import { doc } from 'prettier';
+import add from './assets/add.png'
 import './style.scss';
 
 // layout factory function
@@ -89,17 +90,32 @@ function populateHead() {
 // populate NavBar
 function populateNav() {
     const nav = document.querySelector('.navbar');
+    const ptab = document.createElement('div');
+    const ptabheader = document.createElement('div');
     const projects = document.createElement('h2');
+    const addproject = document.createElement('img');
+
     projects.innerHTML = 'PROJECTS';
+    addproject.src = add;
+    addproject.title = 'Add A Project';
+
+    ptab.classList.add('ptab');
+    ptabheader.classList.add('ptabheader');
+
+    ptabheader.appendChild(addproject);
+    ptabheader.appendChild(projects);
+    ptab.appendChild(ptabheader);
+
     const addtask = createButton("addtask");
     addtask.textContent = "ADD TASK";
+    addtask.title = 'Add A Task';
 
     //appending children to nav
     nav.appendChild(createButton("inbox"));
     nav.appendChild(createButton("day"));
     nav.appendChild(createButton("week"));
-    nav.appendChild(projects);
-    nav.appendChild(addtask)
+    nav.appendChild(ptab);
+    nav.appendChild(addtask);
     return;
 }
 
