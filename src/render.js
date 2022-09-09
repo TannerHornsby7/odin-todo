@@ -33,11 +33,13 @@ function makeTile(obj, index) {
     const flag = document.createElement('img');
     const headdiv = document.createElement('div');
     const tile = document.createElement('div');
+    const tiletop = document.createElement('div');
     const title = document.createElement('h3');
     const description = document.createElement('p');
     const duedate = document.createElement('p');
     let flags = 0;
 
+    tiletop.classList.add('tiletop');
     tile.classList.add('tile');
     flag.classList.add('flag');
     flag.src = fla;
@@ -59,18 +61,21 @@ function makeTile(obj, index) {
     for(let i = 0; i < flags; i++) {
         headdiv.appendChild(flag.cloneNode());
     }
-    tile.appendChild(headdiv);
+    tiletop.appendChild(headdiv);
 
     // setting tile content
     title.textContent = obj.t;
     description.textContent = obj.d;
+    description.classList.add('description');
+    description.style.display = 'none';
     duedate.textContent = moment(obj.dd, 'YYYY-MM-DD').format('MMMM D, YYYY');
     if(duedate.textContent == "Invalid date") {
         duedate.textContent = '';
     }
-    tile.appendChild(title);
+    tiletop.appendChild(title);
+    tiletop.appendChild(duedate);
+    tile.appendChild(tiletop);
     tile.appendChild(description);
-    tile.appendChild(duedate);
 
     return tile;
 }

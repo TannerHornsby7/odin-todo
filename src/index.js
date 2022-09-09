@@ -5,7 +5,7 @@ import moment from 'moment';
 import './style.scss';
 
 let l = layout("container", "header", "navbar", "main").compose();
-let todoArr = [];
+let todoArr = []; //unassigned todo's
 
 // Add Task Event Listener
 const addtask = document.getElementById('addtask');
@@ -79,6 +79,26 @@ function getInputs() {
 // makes a responsive render
 function resRender(objArr) {
     render(objArr);
+
+    // expand tile event listner
+    const tiles = document.querySelectorAll('.tile');
+    tiles.forEach((box) => {
+        box.addEventListener('click', (e)=>{
+            const desc = box.querySelector('.description')
+            box.classList.contains('expanded')
+            ? box.classList.remove('expanded')
+            : box.classList.add('expanded');
+
+            if (box.classList.contains('expanded')) {
+                desc.style.display = "block";
+            } else {
+                desc.style.display = "none";
+            }
+        });
+    });
+
+
+    // complete task event listener
     const tasks = document.querySelectorAll('.finish');
     tasks.forEach((box) => {
         box.addEventListener('click', (e)=>{
