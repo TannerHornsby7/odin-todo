@@ -99,6 +99,24 @@ $darkcolor: rgb(53, 7, 7);
                 }
             }
         }
+        .indiv {
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr 6fr 1fr;
+            place-items: center;
+
+            input {
+                    text-align: center;
+                    height: 35px;
+                    border-radius: 2px;
+                    grid-column: 2 / 3;
+                    @include theme(false);
+            }
+            img {
+                grid-column: 3 / 4;
+                height: 25px
+            }
+        }
     }
 }
 
@@ -117,8 +135,8 @@ $darkcolor: rgb(53, 7, 7);
 
     #tiles {
         max-height: 830px;
-        height: 90%;
         width: 90%;
+        height: 200%;
         display: flex;
         justify-content: flex-start;
         flex-direction: column;
@@ -127,6 +145,10 @@ $darkcolor: rgb(53, 7, 7);
         gap: 10px;
         overflow-y: scroll;
         transition: all .5s ease;
+
+        &::-webkit-scrollbar {
+            display: none;
+          }
 
         .tile {
             @include theme(false);

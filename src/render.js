@@ -5,7 +5,7 @@ const moment = require('moment');
 
 
 // Render UI from object Array
-function render(objList) {
+function renderTiles(objList) {
     const main = document.querySelector('.main');
     const tiles = document.getElementById('tiles');
 
@@ -80,4 +80,15 @@ function makeTile(obj, index) {
     return tile;
 }
 
-export default render;
+// Create Project Tab
+function makeProjs(projects) {
+    const ptab = document.querySelector('.ptab');
+
+    for (const [key, val] in Object.entries(projects)) {
+        const ptitle = document.createElement('h4');
+        ptitle.textContent = key.toString();
+        ptab.appendChild(ptitle);
+    }
+}
+
+export { renderTiles, makeProjs };

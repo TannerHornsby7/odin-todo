@@ -96,6 +96,7 @@ function populateNav() {
     const addproject = document.createElement('img');
 
     projects.innerHTML = 'PROJECTS';
+    addproject.id = 'addproject'
     addproject.src = add;
     addproject.title = 'Add A Project';
 
