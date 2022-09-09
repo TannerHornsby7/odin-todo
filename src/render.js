@@ -1,5 +1,7 @@
 import fin from './assets/logo.png';
 import fla from './assets/flag.png';
+const moment = require('moment');
+
 
 // Render UI from object Array
 function render(objList) {
@@ -61,7 +63,7 @@ function makeTile(obj, index) {
     // setting tile content
     title.textContent = obj.t;
     description.textContent = obj.d;
-    duedate.textContent = obj.dd;
+    duedate.textContent = moment(obj.dd).format('MMMM d, YYYY');
     tile.appendChild(title);
     tile.appendChild(description);
     tile.appendChild(duedate);

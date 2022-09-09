@@ -1,6 +1,7 @@
 import { popform, layout } from './layout';
 import todo from './holder';
 import render from './render.js';
+import moment from 'moment';
 import './style.scss';
 
 let l = layout("container", "header", "navbar", "main").compose();
@@ -23,6 +24,18 @@ addtask.addEventListener('click', ()=>{
         resRender(todoArr);
     });
     // Close Form Event Listener
+});
+
+// Today Filter
+const today = document.getElementById('day');
+console.log(today);
+today.addEventListener('click', ()=> {
+    const todotoday = todoArr.filter((object)=>{
+        console.log(object.dd);
+        return moment(object.dd).diff(moment(), 'hours') < 25;
+    });
+    console.log(todotoday);
+    resRender(todotoday);
 });
 
 // Get all form input values
