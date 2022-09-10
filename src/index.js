@@ -1,8 +1,24 @@
 import { popform, layout } from './layout';
 import todo from './holder';
-import { renderTiles, renderProjs } from './render.js';
+import { renderTiles, renderProjects } from './render.js';
 import moment from 'moment';
 import './style.scss';
+
+let toDoProjects = {Home: []};
+if (storageAvailable('localStorage')) {
+    if (!Storage.length) {
+        console.log(Storage.length);
+        localStorage.setItem('projects', toDoProjects);
+      } else {
+        console.log(Storage.length);
+        localStorage.getItem('projects', toDoProjects);
+      }      
+    // Yippee! We can use localStorage awesomeness
+}
+  else {
+    // Too bad, no localStorage for us
+}  
+
 
 // render responsive task dashboard
 const taskInterface = function(project) {
@@ -119,7 +135,6 @@ const taskInterface = function(project) {
 
 // render current projects tasks
 function renderTasks(arr) {
-    console.log('tasks rendered')
     // Create DOM tiles from task list
     renderTiles(arr);
 
@@ -151,18 +166,17 @@ function renderTasks(arr) {
     });
 }
 
-// by default, we render home as our open project
-let projs = {Home: []};
-
 // create basic layout
 layout("container", "header", "navbar", "main").compose();
 
+
 // create responsive render for home by default
-const ti = taskInterface(projs['Home']);
+const ti = taskInterface(toDoProjects['Home']);
 ti.addEvents();
 
-let numproj = 0;
+
 const addproj = document.getElementById('addproject');
+let numproj = 0;
 
 // Add Project event listener
 addproj.addEventListener('click', ()=>{
@@ -200,49 +214,85 @@ function addProject (p) {
     const bhead = document.getElementById('bodyhead')
     
     // setting new project
-    projs[p] =  [];
-    renderProjs(projs);
-    const newProject = taskInterface(projs[p]);
+    toDoProjects[p] =  [];
+    renderProjects(toDoProjects);
+    const newProject = taskInterface(toDoProjects[p]);
     newProject.addEvents();
     bhead.textContent = p;
-
-    openclose();
+    open();
+    close();
 }
 
-function openclose() {
-    const popen = document.querySelectorAll('.popen');
-    const props = Object.getOwnPropertyNames(projs);
-    const bhead = document.getElementById('bodyhead')
 
+
+function open() {
+    const popen = document.querySelectorAll('.popen');
+    const props = Object.getOwnPropertyNames(toDoProjects);
+    const bhead = document.getElementById('bodyhead');
 
     // Open Project Listeners
     popen.forEach((b) => {
         b.addEventListener('click', (e)=>{
             const curr = props[e.target.dataset.pindex];
-            console.log('inside ' + curr);
-            console.log(projs[curr]);
-            renderTasks(projs[curr]);
-            const cp = taskInterface(projs[curr]);
+            renderTasks(toDoProjects[curr]);
+            const cp = taskInterface(toDoProjects[curr]);
             cp.addEvents();
             bhead.textContent = props[e.target.dataset.pindex];
+            open();
+            close();
     })});
-
+}
+function close() {
     const pdels = document.querySelectorAll('.pdel');
+    const props = Object.getOwnPropertyNames(toDoProjects);
+    const bhead = document.getElementById('bodyhead');
 
     // Delete Project Listeners
     pdels.forEach((pdel) => {
         pdel.addEventListener('click', (e)=>{
             const curr = props[e.target.dataset.pindex];
-            delete projs[curr];
-            renderProjs(projs);
-            const home = taskInterface(projs['Home']);
+            delete toDoProjects[curr];
+            renderProjects(toDoProjects);
+            const home = taskInterface(toDoProjects['Home']);
             home.addEvents();
-            renderTasks(projs['Home'])
+            renderTasks(toDoProjects['Home'])
             bhead.textContent = 'Home';
             numproj--;
+            open();
+            close();
     })});
-    return false;
 }
 
-//fix day filter
+/* Local Storage Functions */
+function storageAvailable(type) {
+    let storage;
+    try {
+        storage = window[type];
+        const x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch (e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
+}
+
+// adding local storage updating event listeners
+window.addEventListener('click', console.log(toDoProjects));
+window.addEventListener('keypress', localStorage.setItem('projects', toDoProjects));
+
+
+//add todo editing
 //add local storage

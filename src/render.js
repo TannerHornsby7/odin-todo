@@ -7,7 +7,7 @@ import { doc } from 'prettier';
 const moment = require('moment');
 
 // Render Project Tab from project Array
-function renderProjs(projects) {
+function renderProjects(projects) {
     const ptab = document.querySelector('.ptab');
     const props = Object.getOwnPropertyNames(projects);
 
@@ -124,4 +124,4 @@ function makeTile(obj, index) {
 }
 
 
-export {renderTiles, renderProjs};
+export {renderTiles, renderProjects};
