@@ -23,7 +23,6 @@ const layout = (c, h, n, m, f) => {
 
 // Form factory function
 const popform = () => {
-    console.log('popped')
     const formbody = document.createElement('div');
     const form = document.createElement('form');
     const submit = createButton('submit');
