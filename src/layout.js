@@ -23,6 +23,7 @@ const layout = (c, h, n, m, f) => {
 
 // Form factory function
 const popform = () => {
+    console.log('popped')
     const formbody = document.createElement('div');
     const form = document.createElement('form');
     const submit = createButton('submit');
@@ -125,6 +126,7 @@ function populateMain() {
     const main = document.querySelector('.main');
     const inbox = document.createElement('h2');
     inbox.innerHTML = 'INBOX';
+    inbox.id ='bodyhead';
 
     main.appendChild(inbox);
     return;

@@ -1,64 +1,29 @@
 import { popform, layout } from './layout';
-import { todo, projects } from './holder';
-import { renderTiles, makeProjs } from './render.js';
+import todo from './holder';
+import { renderTiles, renderProjs } from './render.js';
 import moment from 'moment';
-import ci from './assets/ci.png'
 import './style.scss';
 
-let projs = projects();
-
-/* all of these methods can be placed inside a module that takes an object array
-   and performs interfacing tasks for the given object array taskInterface
-*/
-const taskInterface = function(todoArr = []) {
-
-    const l = layout("container", "header", "navbar", "main").compose();
-    // Add Task Event Listener
+// create responsive task interface for a todo array
+const taskInterface = function(todoArr) {
     const addtask = document.getElementById('addtask');
-    addtask.addEventListener('click', ()=>{
-        popform();
-        const submitbtn = document.getElementById('submit');
-        
-        // Submit Form Event Listener
-        submitbtn.addEventListener('click', ()=> {
-            const formoverlay = document.querySelector('.formoverlay')
-            const inputs = getFormInputs();
-            const tile = todo(inputs);
-            formoverlay.remove();
-            todoArr.push(tile);
-            // Finish Task Event Listeners
-            renderTasks(todoArr);
-        });
-        // Close Form Event Listener
-    });
+    const inbox = document.getElementById('inbox');
+    const today = document.getElementById('day');
+    const week = document.getElementById('week');
+    
+    // Add Task Event Listener
+    addtask.addEventListener('click', addT);
 
     // Inbox Button
-    const inbox = document.getElementById('inbox');
-    inbox.addEventListener('click', ()=> {
-        renderTasks(todoArr);
-    });
+    inbox.addEventListener('click', renderInbox);
 
     // Today Button
-    const today = document.getElementById('day');
-    today.addEventListener('click', ()=> {
-        const todotoday = todoArr.filter((object)=>{
-            const diff = moment(object.dd, 'YYYY-MM-DD').diff(moment(), 'hours');
-            return diff <= 24 && diff > 0;
-        });
-        renderTasks(todotoday);
-    });
+    today.addEventListener('click', renderDayTasks);
 
     // Week Button
-    const week = document.getElementById('week');
-    week.addEventListener('click', ()=> {
-        const todoweek = todoArr.filter((object)=>{
-            const diff = moment(object.dd, 'YYYY-MM-DD').diff(moment(), 'days');
-            return  diff <= 7 && diff >= 0;
-        });
-        renderTasks(todoweek);
-    });
+    week.addEventListener('click', renderWeekTasks);
 
-    // Get all task form input values
+    // Event Listener Functions
     function getFormInputs() {
         const formEl = document.forms.popform;
         const formData = new FormData(formEl);
@@ -82,11 +47,10 @@ const taskInterface = function(todoArr = []) {
         return [t, d, dd, p];
     }
 
-    // Tasks Event Listeners
-    function renderTasks(objArr) {
-
+    function renderTasks(arr) {
+        console.log('tasks rendered')
         // Create DOM tiles from task list
-        renderTiles(objArr);
+        renderTiles(arr);
 
         // expand tile event listner
         const tiles = document.querySelectorAll('.tile');
@@ -116,21 +80,68 @@ const taskInterface = function(todoArr = []) {
         });
     }
 
-    // remove interface
-    function removeRes() {
-        removeEventListener('click', addtask);
-        removeEventListener('click', inbox);
-        removeEventListener('click', today);
-        removeEventListener('click', week);
+    function renderInbox(){
+        renderTasks(todoArr);
     }
 
-    return { l, removeRes }
-}
-let numproj = 0;
-// by default, we render unassigned as our open project
-const initial = taskInterface(projs.getVal(initial));
-initial.l;
+    function renderDayTasks() {
+        const todotoday = todoArr.filter((object)=>{
+            const diff = moment(object.dd, 'YYYY-MM-DD').diff(moment(), 'hours');
+            return diff <= 24 && diff > 0;
+        });
+        renderTasks(todotoday);
+    }
 
+    function renderWeekTasks () {
+        const todoweek = todoArr.filter((object)=>{
+            const diff = moment(object.dd, 'YYYY-MM-DD').diff(moment(), 'days');
+            return diff <= 7 && diff > 0;
+        });
+        renderTasks(todoweek);
+    }
+
+    function addT() {
+        console.log('clicked')
+        popform();
+        const submitbtn = document.getElementById('submit');
+
+        // submitbtn.removeEventListener('click', sub);
+        
+        // Submit Form Event Listener
+        submitbtn.addEventListener('click', sub);
+
+        function sub() {
+            const formoverlay = document.querySelector('.formoverlay')
+            const inputs = getFormInputs();
+            const tile = todo(inputs);
+            formoverlay.remove();
+            todoArr.push(tile);
+            renderInbox(todoArr);
+            // Finish Task Event Listeners
+        }
+    }
+
+    // remove interface
+    function removeRes() {
+        addtask.removeEventListener('click', addT);
+        inbox.removeEventListener('click', renderTasks);
+        today.removeEventListener('click', renderDayTasks);
+        week.removeEventListener('click', renderWeekTasks);
+    }
+
+    return;
+}
+
+// by default, we render home as our open project
+let projs = {Home: []};
+// create basic layout
+layout("container", "header", "navbar", "main").compose();
+// create responsive render for home by default
+taskInterface(projs['Home']);
+
+
+// addproj event listener
+let numproj = 0;
 const addproj = document.getElementById('addproject');
 addproj.addEventListener('click', ()=>{
     if (numproj < 3) {
@@ -138,6 +149,7 @@ addproj.addEventListener('click', ()=>{
         const finput = document.createElement('input');
         const ptab = document.querySelector('.ptab');
         const indiv = document.createElement('div');
+
         // setting indiv
         indiv.classList.add('indiv');
 
@@ -150,23 +162,38 @@ addproj.addEventListener('click', ()=>{
                 
         finput.addEventListener('keydown', function onEvent(event) {
             if (event.key === "Enter") {
-                console.log('entered!')
-                projs.setVal(finput.value, []);
-                console.log(finput.value);
+                projs[finput.value] =  [];
                 indiv.style.display = 'none';
-                makeProjs(projects);
+                renderProjs(projs);
+
+                // Adding Project Menu Event Listeners
+                const popen = document.querySelectorAll('.popen');
+                const pdels = document.querySelectorAll('.pdel');
+                const props = Object.getOwnPropertyNames(projs);
+                const bhead = document.getElementById('bodyhead')
+
+                // Open Project Listeners
+                popen.forEach((b) => {
+                    b.addEventListener('click', (e)=>{
+                        taskInterface(projs[props[e.target.dataset.pindex]]);
+                        bhead.textContent = props[e.target.dataset.pindex];
+                })});
+
+                // Delete Project Listeners
+                pdels.forEach((pdel) => {
+                    pdel.addEventListener('click', (e)=>{
+                    delete projs[props[e.target.dataset.pindex]];
+                    renderProjs(projs);
+                    taskInterface(projs['Home']);
+                    bhead.textContent = 'Home';
+                    numproj--;
+                })});
                 return false;
             }
         });
-        console.log('added project');
         numproj++;
     }
-})
-initial.removeRes();
-
-
-
-
+});
 
 // now we want to be able to create, delete, and read up to 3 new projects
 // a project is just a list of todo objects

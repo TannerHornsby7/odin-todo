@@ -18,18 +18,4 @@ const todo = (arg)=>{
     return Object.assign(Object.create(proto), {arg})
 };
 
-const projects = () => {
-    const proto = {
-        type: 'Projects',
-        initial : [],
-        getVal(key) {
-            return this.key;
-        },
-        setVal(key, v) {
-            this[key] = v;
-        }
-    }
-    return Object.create(proto);
-}
-
-export { todo, projects }
+export default todo

@@ -66,7 +66,7 @@ $darkcolor: rgb(53, 7, 7);
         }
     }
 
-    button:last-child {
+    #addtask {
         grid-row: -1 / -2;
         border: 2px solid $lightcolor;
         background-color: $darkcolor;
@@ -115,6 +115,31 @@ $darkcolor: rgb(53, 7, 7);
             img {
                 grid-column: 3 / 4;
                 height: 25px
+            }
+        }
+        .pcollection {
+            display: flex;
+            flex-direction: column;
+            justify-content: stretch;
+            text-align: center;
+
+            button {
+                display: grid;
+                place-items: center;
+                grid-template-columns: 1fr 3fr 1fr;
+                height: 60px;
+                width: 100%;
+                .pdel {
+                    height: 20px;
+                    grid-column: 1 / 2;
+                }
+                h4 {
+                    grid-column: 2 / 3;
+                }
+                .popen {
+                    height: 20px;
+                    grid-column: 3 / 4;
+                }
             }
         }
     }
