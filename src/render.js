@@ -6,7 +6,7 @@ import { invalid } from 'moment';
 import { doc } from 'prettier';
 const moment = require('moment');
 
-// Create Project Tab
+// Render Project Tab from project Array
 function renderProjs(projects) {
     const ptab = document.querySelector('.ptab');
     const props = Object.getOwnPropertyNames(projects);

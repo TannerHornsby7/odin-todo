@@ -4,9 +4,7 @@ import { renderTiles, renderProjs } from './render.js';
 import moment from 'moment';
 import './style.scss';
 
-let i = 0;
-
-// create responsive task interface for a todo array
+// render responsive task dashboard
 const taskInterface = function(project) {
     const addtask = document.getElementById('addtask');
     const inbox = document.getElementById('inbox');
@@ -30,7 +28,7 @@ const taskInterface = function(project) {
         // Today Button
         const t = today.cloneNode(true);
         t.addEventListener('click', renderDayTasks);
-        t.replaceWith(t);
+        today.replaceWith(t);
         // today.remove();
 
         // Week Button
@@ -88,8 +86,6 @@ const taskInterface = function(project) {
     function addT() {
         popform();
         const submitbtn = document.getElementById('submit');
-        console.log(i);
-        i++;
         
         // Submit Form Event Listener
         submitbtn.addEventListener('click', sub);
@@ -157,16 +153,18 @@ function renderTasks(arr) {
 
 // by default, we render home as our open project
 let projs = {Home: []};
+
 // create basic layout
 layout("container", "header", "navbar", "main").compose();
+
 // create responsive render for home by default
 const ti = taskInterface(projs['Home']);
 ti.addEvents();
 
-
-// addproj event listener
 let numproj = 0;
 const addproj = document.getElementById('addproject');
+
+// Add Project event listener
 addproj.addEventListener('click', ()=>{
     if (numproj < 3) {
         //create project form
@@ -186,53 +184,65 @@ addproj.addEventListener('click', ()=>{
                 
         finput.addEventListener('keydown', function onEvent(event) {
             if (event.key === "Enter") {
-                projs[finput.value] =  [];
+                addProject(finput.value);
                 indiv.style.display = 'none';
-                renderProjs(projs);
-
-                // Adding Project Menu Event Listeners
-                const popen = document.querySelectorAll('.popen');
-                const pdels = document.querySelectorAll('.pdel');
-                const props = Object.getOwnPropertyNames(projs);
-                const bhead = document.getElementById('bodyhead')
-
-                // Open Project Listeners
-                popen.forEach((b) => {
-                    b.addEventListener('click', (e)=>{
-                        ti.removeEvents();
-                        const curr = props[e.target.dataset.pindex];
-                        console.log('inside ' + curr);
-                        console.log(projs[curr]);
-                        renderTasks(projs[curr]);
-                        const cp = taskInterface(projs[curr]);
-                        cp.addEvents();
-                        bhead.textContent = props[e.target.dataset.pindex];
-                })});
-
-                // Delete Project Listeners
-                pdels.forEach((pdel) => {
-                    pdel.addEventListener('click', (e)=>{
-                        const curr = props[e.target.dataset.pindex];
-                        delete projs[curr];
-                        renderProjs(projs);
-                        const home = taskInterface(projs['Home']);
-                        home.addEvents();
-                        bhead.textContent = 'Home';
-                        numproj--;
-                })});
-                return false;
             }
         });
         numproj++;
     }
+    else {
+        return;
+    }
 });
 
-// now we want to be able to create, delete, and read up to 3 new projects
-// a project is just a list of todo objects
-// we can create a new project by creating a new array of objects
-// we can read from this list of object by passing it to the task interface
-// we can delete this list of objects by removing it from our main list of objects
+function addProject (p) {
+    // Adding Project Menu Event Listeners
+    const bhead = document.getElementById('bodyhead')
+    
+    // setting new project
+    projs[p] =  [];
+    renderProjs(projs);
+    const newProject = taskInterface(projs[p]);
+    newProject.addEvents();
+    bhead.textContent = p;
+
+    openclose();
+}
+
+function openclose() {
+    const popen = document.querySelectorAll('.popen');
+    const props = Object.getOwnPropertyNames(projs);
+    const bhead = document.getElementById('bodyhead')
 
 
-//funct get input
-//funct add responsive
+    // Open Project Listeners
+    popen.forEach((b) => {
+        b.addEventListener('click', (e)=>{
+            const curr = props[e.target.dataset.pindex];
+            console.log('inside ' + curr);
+            console.log(projs[curr]);
+            renderTasks(projs[curr]);
+            const cp = taskInterface(projs[curr]);
+            cp.addEvents();
+            bhead.textContent = props[e.target.dataset.pindex];
+    })});
+
+    const pdels = document.querySelectorAll('.pdel');
+
+    // Delete Project Listeners
+    pdels.forEach((pdel) => {
+        pdel.addEventListener('click', (e)=>{
+            const curr = props[e.target.dataset.pindex];
+            delete projs[curr];
+            renderProjs(projs);
+            const home = taskInterface(projs['Home']);
+            home.addEvents();
+            renderTasks(projs['Home'])
+            bhead.textContent = 'Home';
+            numproj--;
+    })});
+    return false;
+}
+
+//fix day filter
+//add local storage
