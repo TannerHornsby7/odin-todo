@@ -75,11 +75,10 @@ addproj.addEventListener('click', (e)=>{
     }
 });
 
-// Add Clear Project event listener
-const header = document.querySelector('.header');
-const clearLocal = document.createElement('button');
+// Clear Local Event Listener
+const clearLocal = document.getElementById('clearLocal');
 clearLocal.addEventListener('click', ()=>{
-    console.log('cleared')
+    const bhead = document.getElementById('bodyhead')
     localStorage.clear();
     toDoProjects = {Home: []};
     // create responsive render for home by default
@@ -87,11 +86,8 @@ clearLocal.addEventListener('click', ()=>{
     ti.addEvents();
     renderProjects(toDoProjects);
     renderTasks(toDoProjects['Home']);
+    bhead.textContent = 'INBOX';
 });
-clearLocal.id = "clearLocal"
-clearLocal.textContent = "Clear Local Storage"
-header.appendChild(clearLocal);
-
 
 // FUNCTIONS/CONSTRUCTORS======================================================
 

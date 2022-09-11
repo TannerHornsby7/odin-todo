@@ -12,8 +12,8 @@ const layout = (c, h, n, m, f) => {
         n, //navbar
         m, //main
         compose () {
+            // Create Title and Favicon
             const favicon = document.createElement('link');
-
             favicon.rel = 'icon';
             favicon.type = 'image/png';
             favicon.href = smile;
@@ -96,7 +96,14 @@ function populateHead() {
     const title = document.createElement('h1');
     title.textContent = "To Do";
     title.id = 'title';
+
+    // Clear Local Storage Button
+    const clearLocal = document.createElement('button');
+    clearLocal.id = "clearLocal"
+    clearLocal.textContent = "Clear Local Storage"
+    
     head.appendChild(title);
+    head.appendChild(clearLocal);
     return;
 }
 
