@@ -83,7 +83,10 @@ function createSection (section) {
 // populate Header
 function populateHead() {
     const head = document.querySelector('.header');
-    head.innerHTML = "To Do"
+    const title = document.createElement('h1');
+    title.textContent = "To Do";
+    title.id = 'title';
+    head.appendChild(title);
     return;
 }
 

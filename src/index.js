@@ -6,19 +6,16 @@ import './style.scss';
 
 let toDoProjects = {Home: []};
 if (storageAvailable('localStorage')) {
-    if (!Storage.length) {
-        console.log(Storage.length);
-        localStorage.setItem('projects', toDoProjects);
+    if (!localStorage.length) {
+        localStorage.setItem('projects', JSON.stringify(toDoProjects));
       } else {
-        console.log(Storage.length);
-        localStorage.getItem('projects', toDoProjects);
+        toDoProjects = JSON.parse(localStorage.getItem('projects'));
       }      
     // Yippee! We can use localStorage awesomeness
 }
   else {
     // Too bad, no localStorage for us
 }  
-
 
 // render responsive task dashboard
 const taskInterface = function(project) {
@@ -133,6 +130,14 @@ const taskInterface = function(project) {
     return { addEvents, removeEvents }
 }
 
+// adding local storage updating event listeners
+document.body.addEventListener('keydown', ()=> {
+    localStorage.setItem('projects', JSON.stringify(toDoProjects));
+    console.log('workin');
+    console.log(toDoProjects);
+    console.log(localStorage.length);
+});
+
 // render current projects tasks
 function renderTasks(arr) {
     // Create DOM tiles from task list
@@ -173,6 +178,8 @@ layout("container", "header", "navbar", "main").compose();
 // create responsive render for home by default
 const ti = taskInterface(toDoProjects['Home']);
 ti.addEvents();
+renderProjects(toDoProjects);
+
 
 
 const addproj = document.getElementById('addproject');
@@ -289,9 +296,24 @@ function storageAvailable(type) {
     }
 }
 
-// adding local storage updating event listeners
-window.addEventListener('click', console.log(toDoProjects));
-window.addEventListener('keypress', localStorage.setItem('projects', toDoProjects));
+const header = document.querySelector('.header');
+const clearLocal = document.createElement('button');
+clearLocal.addEventListener('click', ()=>{
+    console.log('cleared')
+    localStorage.clear();
+    toDoProjects = {Home: []};
+    // create responsive render for home by default
+    const ti = taskInterface(toDoProjects['Home']);
+    ti.addEvents();
+    renderProjects(toDoProjects);
+    renderTasks(toDoProjects['Home']);
+});
+
+clearLocal.id = "clearLocal"
+clearLocal.textContent = "Clear Local Storage"
+header.appendChild(clearLocal);
+
+
 
 
 //add todo editing
