@@ -7,7 +7,7 @@
 
 ## Description
 
-A todo app created using javascript
+A todo app with projects and date filters.
 
 ## Skills
 - Javascript
