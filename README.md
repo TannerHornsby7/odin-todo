@@ -1,6 +1,9 @@
 # Odin To Do App
 
-![todo]()
+![todo](assets/../src/assets/banner.jpeg)
+
+## Live Demo
+[here](https://tannerhornsby7.github.io/odin-todo/)
 
 ## Description
 
