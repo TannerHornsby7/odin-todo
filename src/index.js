@@ -4,21 +4,94 @@ import { renderTiles, renderProjects } from './render.js';
 import moment from 'moment';
 import './style.scss';
 
+// Control Flow
 let toDoProjects = {Home: []};
 if (storageAvailable('localStorage')) {
     if (!localStorage.length) {
         localStorage.setItem('projects', JSON.stringify(toDoProjects));
-      } else {
+    } else {
         toDoProjects = JSON.parse(localStorage.getItem('projects'));
-      }      
+    }      
     // Yippee! We can use localStorage awesomeness
 }
-  else {
+else {
     // Too bad, no localStorage for us
 }  
 
+// adding local storage updating event listeners
+document.body.addEventListener('keydown', ()=> {
+    localStorage.setItem('projects', JSON.stringify(toDoProjects));
+    console.log('workin');
+    console.log(toDoProjects);
+    console.log(localStorage.length);
+});
+
+// create basic layout
+layout("container", "header", "navbar", "main").compose();
+
+// create responsive render for home by default
+renderProjects(toDoProjects);
+const ti = taskInterface(toDoProjects['Home']);
+ti.addEvents();
+open();
+close();
+
+// Add Project event listener
+const addproj = document.getElementById('addproject');
+addproj.addEventListener('click', (e)=>{
+    if (Object.keys(toDoProjects).length < 5) {
+        //create project form
+        const finput = document.createElement('input');
+        const ptab = document.querySelector('.ptab');
+        const indiv = document.createElement('div');
+
+        // setting indiv
+        indiv.classList.add('indiv');
+
+        // setting input
+        finput.type = 'text';
+        finput.title = 'Project Title';
+
+        indiv.appendChild(finput);
+        ptab.appendChild(indiv);
+                
+        finput.addEventListener('keydown', function onEvent(event) {
+            if (event.key === "Enter") {
+                addProject(finput.value);
+                indiv.style.display = 'none';
+            }
+        });
+    }
+    else {
+        console.log('project limit reached');
+        console.log(toDoProjects.length)
+        e.target.title = 'project limit reached'
+        return;
+    }
+});
+
+// Add Clear Project event listener
+const header = document.querySelector('.header');
+const clearLocal = document.createElement('button');
+clearLocal.addEventListener('click', ()=>{
+    console.log('cleared')
+    localStorage.clear();
+    toDoProjects = {Home: []};
+    // create responsive render for home by default
+    const ti = taskInterface(toDoProjects['Home']);
+    ti.addEvents();
+    renderProjects(toDoProjects);
+    renderTasks(toDoProjects['Home']);
+});
+clearLocal.id = "clearLocal"
+clearLocal.textContent = "Clear Local Storage"
+header.appendChild(clearLocal);
+
+
+// FUNCTIONS/CONSTRUCTORS======================================================
+
 // render responsive task dashboard
-const taskInterface = function(project) {
+function taskInterface (project) {
     const addtask = document.getElementById('addtask');
     const inbox = document.getElementById('inbox');
     const today = document.getElementById('day');
@@ -129,16 +202,7 @@ const taskInterface = function(project) {
 
     return { addEvents, removeEvents }
 }
-
-// adding local storage updating event listeners
-document.body.addEventListener('keydown', ()=> {
-    localStorage.setItem('projects', JSON.stringify(toDoProjects));
-    console.log('workin');
-    console.log(toDoProjects);
-    console.log(localStorage.length);
-});
-
-// render current projects tasks
+// render current project's tasks
 function renderTasks(arr) {
     // Create DOM tiles from task list
     renderTiles(arr);
@@ -170,52 +234,7 @@ function renderTasks(arr) {
         });
     });
 }
-
-// create basic layout
-layout("container", "header", "navbar", "main").compose();
-
-
-// create responsive render for home by default
-const ti = taskInterface(toDoProjects['Home']);
-ti.addEvents();
-renderProjects(toDoProjects);
-
-
-
-const addproj = document.getElementById('addproject');
-let numproj = 0;
-
-// Add Project event listener
-addproj.addEventListener('click', ()=>{
-    if (numproj < 3) {
-        //create project form
-        const finput = document.createElement('input');
-        const ptab = document.querySelector('.ptab');
-        const indiv = document.createElement('div');
-
-        // setting indiv
-        indiv.classList.add('indiv');
-
-        // setting input
-        finput.type = 'text';
-        finput.title = 'Project Title';
-
-        indiv.appendChild(finput);
-        ptab.appendChild(indiv);
-                
-        finput.addEventListener('keydown', function onEvent(event) {
-            if (event.key === "Enter") {
-                addProject(finput.value);
-                indiv.style.display = 'none';
-            }
-        });
-        numproj++;
-    }
-    else {
-        return;
-    }
-});
-
+// add a project
 function addProject (p) {
     // Adding Project Menu Event Listeners
     const bhead = document.getElementById('bodyhead')
@@ -229,9 +248,7 @@ function addProject (p) {
     open();
     close();
 }
-
-
-
+// open a project
 function open() {
     const popen = document.querySelectorAll('.popen');
     const props = Object.getOwnPropertyNames(toDoProjects);
@@ -239,6 +256,7 @@ function open() {
 
     // Open Project Listeners
     popen.forEach((b) => {
+        console.log(b);
         b.addEventListener('click', (e)=>{
             const curr = props[e.target.dataset.pindex];
             renderTasks(toDoProjects[curr]);
@@ -249,6 +267,7 @@ function open() {
             close();
     })});
 }
+// close a project
 function close() {
     const pdels = document.querySelectorAll('.pdel');
     const props = Object.getOwnPropertyNames(toDoProjects);
@@ -296,25 +315,5 @@ function storageAvailable(type) {
     }
 }
 
-const header = document.querySelector('.header');
-const clearLocal = document.createElement('button');
-clearLocal.addEventListener('click', ()=>{
-    console.log('cleared')
-    localStorage.clear();
-    toDoProjects = {Home: []};
-    // create responsive render for home by default
-    const ti = taskInterface(toDoProjects['Home']);
-    ti.addEvents();
-    renderProjects(toDoProjects);
-    renderTasks(toDoProjects['Home']);
-});
-
-clearLocal.id = "clearLocal"
-clearLocal.textContent = "Clear Local Storage"
-header.appendChild(clearLocal);
-
-
-
-
 //add todo editing
-//add local storage
+//fix local load
