@@ -20,28 +20,26 @@ else {
     // Too bad, no localStorage for us
 }  
 
-// adding local storage updating event listeners
-document.body.addEventListener('keydown', ()=> {
-    localStorage.setItem('projects', JSON.stringify(toDoProjects));
-    // console.log('workin');
-    // console.log(toDoProjects);
-    // console.log(localStorage.length);
-});
-
 // create basic layout
 layout("container", "header", "navbar", "main").compose();
 
 // create responsive render for home by default
 renderProjects(toDoProjects);
 const ti = taskInterface(toDoProjects['Home']);
-// console.log(ti)
 renderTasks(toDoProjects['Home']);
-// console.log(toDoProjects['Home']);
 ti.addEvents();
 open();
 close();
 
-// Add Project event listener
+
+// Add Event Listners==========================================================
+
+// Update Local Storage
+document.body.addEventListener('keydown', ()=> {
+    localStorage.setItem('projects', JSON.stringify(toDoProjects));
+});
+
+// Add Project
 const addproj = document.getElementById('addproject');
 addproj.addEventListener('click', (e)=>{
     if (Object.keys(toDoProjects).length < 5) {
@@ -75,7 +73,7 @@ addproj.addEventListener('click', (e)=>{
     }
 });
 
-// Clear Local Event Listener
+// Clear Local Storage
 const clearLocal = document.getElementById('clearLocal');
 clearLocal.addEventListener('click', ()=>{
     const bhead = document.getElementById('bodyhead')
@@ -235,22 +233,22 @@ function renderTasks(arr) {
         });
     });
 }
-// add a project
+// add a project and its functionalities
 function addProject (p) {
     // Adding Project Menu Event Listeners
     const bhead = document.getElementById('bodyhead')
-    console.log(toDoProjects)
-    console.log(toDoProjects['Home']);
     
     // setting new project
-    toDoProjects[p] =  [];
-    renderProjects(toDoProjects);
-    const newProject = taskInterface(toDoProjects[p]);
-    newProject.addEvents();
-    renderTasks(toDoProjects[p])
-    bhead.textContent = p;
-    open();
+    toDoProjects[p] =  []; // creating empty task array
+    renderProjects(toDoProjects); //rendering the new project list
+    open(); //adding open and close funcitonality to new project list
     close();
+    const newProject = taskInterface(toDoProjects[p]);
+    /*
+    getting task interface for new project
+    */
+    newProject.addEvents(); // adding new project's events
+    bhead.textContent = p;
 }
 // Event Listener Functions
 function getFormInputs () {
@@ -354,5 +352,3 @@ function toDoReviver(pjs){
     }
 
 }
-
-//add todo editing
