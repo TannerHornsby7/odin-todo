@@ -131,6 +131,7 @@ function makeTile(obj, index) {
     tile.appendChild(tiletop);
     tile.appendChild(description);
 
+    // console.log(obj[t]);
     return tile;
 }
 

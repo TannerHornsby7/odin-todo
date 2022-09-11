@@ -11,6 +11,8 @@ if (storageAvailable('localStorage')) {
         localStorage.setItem('projects', JSON.stringify(toDoProjects));
     } else {
         toDoProjects = JSON.parse(localStorage.getItem('projects'));
+        toDoReviver(toDoProjects);
+        // console.log(toDoProjects['Home']);
     }      
     // Yippee! We can use localStorage awesomeness
 }
@@ -21,9 +23,9 @@ else {
 // adding local storage updating event listeners
 document.body.addEventListener('keydown', ()=> {
     localStorage.setItem('projects', JSON.stringify(toDoProjects));
-    console.log('workin');
-    console.log(toDoProjects);
-    console.log(localStorage.length);
+    // console.log('workin');
+    // console.log(toDoProjects);
+    // console.log(localStorage.length);
 });
 
 // create basic layout
@@ -32,6 +34,9 @@ layout("container", "header", "navbar", "main").compose();
 // create responsive render for home by default
 renderProjects(toDoProjects);
 const ti = taskInterface(toDoProjects['Home']);
+// console.log(ti)
+renderTasks(toDoProjects['Home']);
+// console.log(toDoProjects['Home']);
 ti.addEvents();
 open();
 close();
@@ -200,7 +205,7 @@ function taskInterface (project) {
     week.removeEventListener('click', renderWeekTasks);
     }
 
-    return { addEvents, removeEvents }
+    return { addEvents, removeEvents, renderInbox }
 }
 // render current project's tasks
 function renderTasks(arr) {
@@ -229,8 +234,8 @@ function renderTasks(arr) {
     const tasks = document.querySelectorAll('.finish');
     tasks.forEach((box) => {
         box.addEventListener('click', (e)=>{
-            project.splice(e.target.dataset.index, 1);
-            renderTasks(project);
+            arr.splice(e.target.dataset.index, 1);
+            renderTasks(arr);
         });
     });
 }
@@ -238,12 +243,15 @@ function renderTasks(arr) {
 function addProject (p) {
     // Adding Project Menu Event Listeners
     const bhead = document.getElementById('bodyhead')
+    console.log(toDoProjects)
+    console.log(toDoProjects['Home']);
     
     // setting new project
     toDoProjects[p] =  [];
     renderProjects(toDoProjects);
     const newProject = taskInterface(toDoProjects[p]);
     newProject.addEvents();
+    renderTasks(toDoProjects[p])
     bhead.textContent = p;
     open();
     close();
@@ -256,7 +264,7 @@ function open() {
 
     // Open Project Listeners
     popen.forEach((b) => {
-        console.log(b);
+        // console.log(b);
         b.addEventListener('click', (e)=>{
             const curr = props[e.target.dataset.pindex];
             renderTasks(toDoProjects[curr]);
@@ -312,6 +320,20 @@ function storageAvailable(type) {
             // acknowledge QuotaExceededError only if there's something already stored
             (storage && storage.length !== 0);
     }
+}
+
+function toDoReviver(pjs){
+    for(let p in pjs) {
+        for(let i = 0; i < pjs[p].length; i++) {
+            console.log("Project: " + p);
+            if (pjs[p][i].hasOwnProperty('arg')) {
+            console.log("Todo: " + pjs[p][i]);
+            console.log(pjs[p][i]);
+                pjs[p][i] = todo(pjs[p][i].arg);
+            }
+        }
+    }
+
 }
 
 //add todo editing
