@@ -1,6 +1,7 @@
 import { doc } from 'prettier';
 import add from './assets/add.png'
 import './style.scss';
+import smile from './assets/smile.png';
 
 // layout factory function
 const layout = (c, h, n, m, f) => {
@@ -11,6 +12,15 @@ const layout = (c, h, n, m, f) => {
         n, //navbar
         m, //main
         compose () {
+            const favicon = document.createElement('link');
+
+            favicon.rel = 'icon';
+            favicon.type = 'image/png';
+            favicon.href = smile;
+
+            document.title = 'To Do';
+            document.head.appendChild(favicon);
+
             appendSections(c, h, n, m);
             populateHead();
             populateNav();
