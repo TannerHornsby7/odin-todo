@@ -24,6 +24,15 @@ function renderProjects(projects) {
         const pdel = document.createElement('img');
         const popen = document.createElement('img');
 
+        pdiv.addEventListener('mouseover', ()=>{
+            pdel.style.display = 'block';
+            popen.style.display = 'block';
+        });
+        pdiv.addEventListener('mouseleave', ()=>{
+            pdel.style.display = 'none';
+            popen.style.display = 'none';
+        });
+
         
         // setting attributes of project divs
         pcollection.classList.add('pcollection');
@@ -33,6 +42,8 @@ function renderProjects(projects) {
         popen.dataset.pindex = key;
         pdel.dataset.pindex = key;
         pdel.src = del;
+        pdel.style.display = 'none';
+        popen.style.display = 'none';
         popen.src = open;
         if (pdel.dataset.pindex != 0) pdiv.appendChild(pdel);
         ptitle.textContent = props[key];

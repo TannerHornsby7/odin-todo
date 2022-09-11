@@ -283,7 +283,6 @@ function close() {
             home.addEvents();
             renderTasks(toDoProjects['Home'])
             bhead.textContent = 'Home';
-            numproj--;
             open();
             close();
     })});
@@ -316,4 +315,3 @@ function storageAvailable(type) {
 }
 
 //add todo editing
-//fix local load
