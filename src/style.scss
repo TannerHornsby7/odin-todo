@@ -165,7 +165,6 @@ $darkcolor: rgb(53, 7, 7);
 // Main Formatting
 .main {
     @include theme(false);
-    height: 100%;
     grid-row: 2 / 3;
     grid-column: 2 / 3;
     text-align: center;
@@ -176,9 +175,8 @@ $darkcolor: rgb(53, 7, 7);
     }
 
     #tiles {
-        max-height: 830px;
+        max-height: 750px;
         width: 90%;
-        height: 200%;
         display: flex;
         justify-content: flex-start;
         flex-direction: column;
