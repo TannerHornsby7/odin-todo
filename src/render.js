@@ -2,6 +2,7 @@ import fin from './assets/logo.png';
 import fla from './assets/flag.png';
 import del from './assets/del.png';
 import open from './assets/open.png';
+import ed from './assets/edit.png'
 import { invalid } from 'moment';
 import { doc } from 'prettier';
 const moment = require('moment');
@@ -85,6 +86,7 @@ function makeList(objList) {
 function makeTile(obj, index) {
     const finish = document.createElement('img');
     const flag = document.createElement('img');
+    const edit = document.createElement('img');
     const headdiv = document.createElement('div');
     const tile = document.createElement('div');
     const tiletop = document.createElement('div');
@@ -96,12 +98,16 @@ function makeTile(obj, index) {
     tiletop.classList.add('tiletop');
     tile.classList.add('tile');
     flag.classList.add('flag');
+    edit.classList.add('edit');
+    edit.src = ed;
+    edit.title = 'edit';
     flag.src = fla;
     flag.title = 'priority'
     finish.classList.add('finish');
     finish.src = fin;
     finish.title = 'done?';
     finish.dataset.index = index;
+    edit.dataset.index = index;
 
 
     // setting head div content
@@ -128,6 +134,7 @@ function makeTile(obj, index) {
     }
     tiletop.appendChild(title);
     tiletop.appendChild(duedate);
+    tiletop.appendChild(edit);
     tile.appendChild(tiletop);
     tile.appendChild(description);
 

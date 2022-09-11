@@ -129,30 +129,6 @@ function taskInterface (project) {
         // week.remove();
     }
 
-    // Event Listener Functions
-    function getFormInputs () {
-        const formEl = document.forms.popform;
-        const formData = new FormData(formEl);
-        let t = formData.get('title');
-        let d = formData.get('description')
-        let dd = formData.get('duedate');
-        let hp = formData.get('hpriority');
-        let mp = formData.get('mpriority');
-        let p;
-
-        if(hp) {
-            p = "hpriority";
-        }
-        else if (mp) {
-            p = "mpriority";
-        }
-        else {
-            p = "lpriority";
-        }
-
-        return [t, d, dd, p];
-    }
-
     function renderInbox (){
         renderTasks(project);
     }
@@ -172,7 +148,6 @@ function taskInterface (project) {
         });
         renderTasks(todoweek);
     }
-
 
     function addT() {
         popform();
@@ -229,6 +204,31 @@ function renderTasks(arr) {
         });
     });
 
+    // edit tile event listener
+    const editbtns = document.querySelectorAll('.edit');
+    editbtns.forEach((btn) => {
+        btn.addEventListener('click', (e)=>{
+            popform();
+            const submitbtn = document.getElementById('submit');
+            
+            // Submit Form Event Listener
+            submitbtn.addEventListener('click', sub);
+    
+            function sub() {
+                const formoverlay = document.querySelector('.formoverlay')
+                const inputs = getFormInputs();
+                const tile = todo(inputs);
+                formoverlay.remove();
+                arr[e.target.dataset.index] = tile;
+                renderTasks(arr);
+                // Finish Task Event Listeners
+                submitbtn.removeEventListener('click', sub);
+            }
+        });
+    });
+
+
+
 
     // complete task event listener
     const tasks = document.querySelectorAll('.finish');
@@ -255,6 +255,29 @@ function addProject (p) {
     bhead.textContent = p;
     open();
     close();
+}
+// Event Listener Functions
+function getFormInputs () {
+    const formEl = document.forms.popform;
+    const formData = new FormData(formEl);
+    let t = formData.get('title');
+    let d = formData.get('description')
+    let dd = formData.get('duedate');
+    let hp = formData.get('hpriority');
+    let mp = formData.get('mpriority');
+    let p;
+
+    if(hp) {
+        p = "hpriority";
+    }
+    else if (mp) {
+        p = "mpriority";
+    }
+    else {
+        p = "lpriority";
+    }
+
+    return [t, d, dd, p];
 }
 // open a project
 function open() {
