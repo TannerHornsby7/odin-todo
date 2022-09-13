@@ -10,7 +10,7 @@ const config = {
     render: "./src/render.js",
     holder: "./src/holder.js",
     index: "./src/index.js",
-    layout: "./src/layout.js"
+    layout: "./src/layout.js",
   },
   devtool: "inline-source-map",
   output: {
@@ -32,7 +32,7 @@ const config = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader","css-loader", "sass-loader"],
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
